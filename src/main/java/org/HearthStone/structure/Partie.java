@@ -1,7 +1,10 @@
 package org.HearthStone.structure;
 
+import org.HearthStone.HearthStone;
 import org.HearthStone.personnages.Champion;
 import org.HearthStone.personnages.Monstre;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +20,7 @@ public class Partie {
         this.plateau = new PlateauV2(new EspaceJoueur(joueur1), new EspaceJoueur(joueur2));
     }
     private Scanner scanner = new Scanner(System.in);
+    private static final Logger logger = LogManager.getLogger(Partie.class);
     public void demarrerPartie() throws InterruptedException {
         while(!partieTerminee()){
             effectuerTour(joueur1);
@@ -56,8 +60,10 @@ public class Partie {
             Carte carteChoisie = trouverCarteDansMain(joueur, choix);
             if(carteChoisie != null){
                 joueur.invoquerCarte(carteChoisie,plateau);
+                logger.info("Monstre invoqué par "+joueur.getNom()+" : "+carteChoisie.getNom());
             }else {
                 System.out.println("Carte non trouvée, veuillez choisir à nouveau");
+                logger.error("Carte choisie par le joueur "+joueur.getNom()+" est incorrecte");
             }
         }
         System.out.println("Phase d'invocation terminée");
@@ -83,6 +89,7 @@ public class Partie {
                 Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
                 if(monstrecible != null){
                     champion.utiliserCapaciteSpeciale(monstrecible);
+                    logger.info("Capacité effectuée par "+joueur.getNom());
                     if (monstrecible.getPv() == 0){
                         plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
                     }
