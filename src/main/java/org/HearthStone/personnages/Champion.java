@@ -1,7 +1,6 @@
-package org.example.personnages;
+package org.HearthStone.personnages;
 
-import org.example.personnages.capacites.CapaciteSpeciale;
-import org.example.personnages.capacites.Cible;
+import org.HearthStone.personnages.capacites.CapaciteSpeciale;
 
 public class Champion {
     private static int compteurChampionID = 1;

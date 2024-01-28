@@ -1,20 +1,21 @@
-package org.example;
+package org.HearthStone;
 
-import org.example.personnages.Champion;
-import org.example.personnages.capacites.AttaqueCible;
-import org.example.personnages.capacites.CapaciteSpeciale;
-import org.example.personnages.capacites.Guerison;
-import org.example.structure.*;
+import org.HearthStone.personnages.Champion;
+import org.HearthStone.personnages.capacites.AttaqueCible;
+import org.HearthStone.personnages.capacites.CapaciteSpeciale;
+import org.HearthStone.personnages.capacites.Guerison;
+import org.HearthStone.structure.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Scanner;
 
 public class HearthStone {
     private static Scanner scanner = new Scanner(System.in);
+    private static final Logger logger = LogManager.getLogger(HearthStone.class);
+
 
     public static void main(String[] args) throws InterruptedException {
-
-        CapaciteSpeciale attaqueCible = new AttaqueCible();
-        CapaciteSpeciale guerison = new Guerison();
 
         System.out.println("Création du deck aléatoire du Joueur 1");
         Deck deckJoueur1 = creerDeck();
@@ -35,7 +36,7 @@ public class HearthStone {
         Joueur joueur2 = new Joueur(champion2.getNom(),champion2,deckJoueur2);
 
         Partie partie = new Partie(joueur1, joueur2);
-
+        logger.info("Partie crée avec succès");
         partie.demarrerPartie();
     }
 
@@ -48,10 +49,12 @@ public class HearthStone {
     private static Champion creerChampion() {
         System.out.println("Entrez le nom de votre champion : ");
         String nomChampion = scanner.nextLine();
+        logger.info("Le joueur a selectionné comme nom pour son champion :"+nomChampion);
 
         System.out.println("Choisissez la capacité spéciale de votre champion :");
         System.out.println("1. Attaque sur une cible");
         System.out.println("2. Guérison");
+
 
         int choixCapacite = scanner.nextInt();
         scanner.nextLine();
@@ -60,12 +63,15 @@ public class HearthStone {
         switch (choixCapacite) {
             case 1:
                 capaciteSpeciale = new AttaqueCible();
+                logger.info("Le joueur a selectionné comme capacité pour son champion : Attaque sur une cible");
                 break;
             case 2:
                 capaciteSpeciale = new Guerison();
+                logger.info("Le joueur a selectionné comme capacité pour son champion : Guérison");
                 break;
             default:
                 System.out.println("Choix non valide, la capacité par défaut sera Attaque sur une cible.");
+                logger.error("Choix de capacité erronée, capacité sélectionnée : Attaque sur une cible");
                 capaciteSpeciale = new AttaqueCible();
                 break;
         }

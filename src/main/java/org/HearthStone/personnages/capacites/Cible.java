@@ -1,4 +1,4 @@
-package org.example.personnages.capacites;
+package org.HearthStone.personnages.capacites;
 
 public interface Cible {
     void subirDegats(int degats);

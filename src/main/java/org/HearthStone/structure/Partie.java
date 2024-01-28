@@ -1,9 +1,7 @@
-package org.example.structure;
+package org.HearthStone.structure;
 
-import org.example.personnages.Champion;
-import org.example.personnages.Monstre;
-import org.example.personnages.ReferentielStats;
-import org.example.personnages.capacites.Cible;
+import org.HearthStone.personnages.Champion;
+import org.HearthStone.personnages.Monstre;
 
 import java.util.List;
 import java.util.Scanner;

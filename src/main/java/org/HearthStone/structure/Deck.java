@@ -1,10 +1,12 @@
-package org.example.structure;
+package org.HearthStone.structure;
 
-import org.example.personnages.ClasseMonstre;
+import org.HearthStone.personnages.ClasseMonstre;
+
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Deck {
     private List<Carte> cartes;
@@ -17,7 +19,7 @@ public class Deck {
 
     public void initialiserDeck() throws InterruptedException {
         for (int i = 0; i<10; i++){
-            Carte carte = new Carte("Test"+(i+1),ClasseMonstre.Eclaireur);
+            Carte carte = new Carte("Test"+(i+1), genererClasseAleatoire());
             cartes.add(carte);
             Thread.sleep(50);
         }
@@ -30,5 +32,11 @@ public class Deck {
             System.out.println("Le deck est vide");
             return null;
         }
+    }
+
+    private static ClasseMonstre genererClasseAleatoire() {
+        ClasseMonstre[] classes = ClasseMonstre.values();
+        Random random = new Random();
+        return classes[random.nextInt(classes.length)];
     }
 }

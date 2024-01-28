@@ -1,7 +1,6 @@
-package org.example.personnages;
+package org.HearthStone.personnages;
 
-import org.example.personnages.capacites.Cible;
-import org.example.structure.Carte;
+import org.HearthStone.structure.Carte;
 
 public abstract class Monstre  extends Carte {
     private int pv;

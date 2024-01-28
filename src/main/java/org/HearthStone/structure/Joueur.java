@@ -1,7 +1,7 @@
-package org.example.structure;
+package org.HearthStone.structure;
 
-import org.example.personnages.Champion;
-import org.example.personnages.Monstre;
+import org.HearthStone.personnages.Champion;
+import org.HearthStone.personnages.Monstre;
 
 import java.util.ArrayList;
 import java.util.List;
