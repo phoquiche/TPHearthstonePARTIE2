@@ -43,6 +43,9 @@ public class Partie {
         phaseAttaque(joueur);
 
         //fin du tour
+        if (joueur.getChampion().getPv() == 0){
+
+        }
     }
 
     private void phaseInvocations(Joueur joueur) throws InterruptedException {
@@ -131,7 +134,7 @@ public class Partie {
     private void afficherMain(Joueur joueur) throws InterruptedException {
         System.out.println("Main de "+joueur.getNom()+": ");
         for (Carte carte : joueur.getMain()){
-            System.out.println(carte.getNom());
+            System.out.println("Nom : " + carte.getNom() + " Classe : " + carte.getClasse());
             Thread.sleep(250);
         }
     }

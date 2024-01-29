@@ -43,6 +43,13 @@ public class Champion {
         return pv;
     }
 
+    public void subirDegats(int degats) {
+        pv -= degats;
+        if(pv <= 0){
+            pv = 0;
+        }
+    }
+
     public CapaciteSpeciale getCapaciteSpeciale() {
         return capaciteSpeciale;
     }
