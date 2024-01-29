@@ -1,5 +1,6 @@
 package org.HearthStone.structure;
 
+import org.HearthStone.personnages.ClasseMonstre;
 import org.HearthStone.personnages.Monstre;
 
 import java.util.ArrayList;
@@ -19,11 +20,30 @@ public class PlateauV2 {
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
         return espaceJoueur.getMonstresIG();
     }
+
+    public List<Monstre> getMonstresEnemieListSurPlateau(Joueur joueur) {
+        EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
+        List<Monstre> listMonstre = new ArrayList<>(espaceJoueur.getMonstresIG());
+        boolean testProtecteur = false;
+        for (Monstre monstre : listMonstre){
+            if (monstre.getClasse() == ClasseMonstre.Protecteur) {
+                testProtecteur = true;
+                break;
+            }
+        }
+        if (!testProtecteur){
+            return listMonstre;
+        }
+        return listMonstre.stream()
+                .filter(monstre -> monstre.getClasse() == ClasseMonstre.Protecteur)
+                .toList();
+    }
+
     public List<Monstre> getMonstresEnnemisSurPlateau(Joueur joueur){
         if(joueur.equals(espaceJoueur1.getJoueur())){
-            return espaceJoueur2.getMonstresIG();
+            return getMonstresEnemieListSurPlateau(espaceJoueur2.getJoueur());
         } else if (joueur.equals(espaceJoueur2.getJoueur())) {
-            return espaceJoueur1.getMonstresIG();
+            return getMonstresEnemieListSurPlateau(espaceJoueur1.getJoueur());
         }
         return new ArrayList<>();
     }

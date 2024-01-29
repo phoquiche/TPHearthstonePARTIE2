@@ -32,4 +32,8 @@ public abstract class Monstre  extends Carte {
             pv = 0;
         }
     }
+
+    public void regenererHp(int soin) {
+        pv += soin;
+    }
 }

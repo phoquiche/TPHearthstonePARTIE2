@@ -4,6 +4,7 @@ import org.HearthStone.personnages.ClasseMonstre;
 import org.HearthStone.personnages.Monstre;
 import org.HearthStone.personnages.monstres_classes.Healeur;
 import org.HearthStone.personnages.monstres_classes.Eclaireur;
+import org.HearthStone.personnages.monstres_classes.Protecteur;
 
 public class Carte {
     private static int compteurIDS = 0;
@@ -33,6 +34,7 @@ public class Carte {
         return switch (classe) {
             case Eclaireur -> new Eclaireur(id, nom);
             case Healeur -> new Healeur(id, nom);
+            case Protecteur -> new Protecteur(id, nom);
             default -> throw new IllegalArgumentException("Classe de Monstre non reconnue : " + classe);
         };
     }
