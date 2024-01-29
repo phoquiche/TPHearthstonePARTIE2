@@ -38,14 +38,11 @@ public class Partie {
         Thread.sleep(1000);
         //phase d'invocations
         phaseInvocations(joueur);
-
+        System.out.println("Fin de la phase d'invocation");
         //phase d'attaque
         phaseAttaque(joueur);
 
         //fin du tour
-        if (joueur.getChampion().getPv() == 0){
-
-        }
     }
 
     private void phaseInvocations(Joueur joueur) throws InterruptedException {
@@ -64,6 +61,7 @@ public class Partie {
             if(carteChoisie != null){
                 joueur.invoquerCarte(carteChoisie,plateau);
                 logger.info("Monstre invoqué par "+joueur.getNom()+" : "+carteChoisie.getNom());
+                break;
             }else {
                 System.out.println("Carte non trouvée, veuillez choisir à nouveau");
                 logger.error("Carte choisie par le joueur "+joueur.getNom()+" est incorrecte");
@@ -76,12 +74,15 @@ public class Partie {
         System.out.println("Début de la phase d'attaque pour "+joueur.getNom());
         Champion champion = joueur.getChampion();
         if (champion.isCapaciteSpecialeDisponible()) {
-            System.out.println("Voulez-vous utiliser la capacité de votre champion ?");
+            System.out.println("Voulez-vous utiliser la capacité de votre champion ? (oui/non)");
             String choixCapacite = scanner.next();
 
 
             if(choixCapacite.equalsIgnoreCase("oui")) {
-
+                if ( plateau.getMonstresEnnemisSurPlateau(joueur).isEmpty()) {
+                    System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
+                }
+                else {
                 List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
                 System.out.println("Monstres ennemies disponible : ");
                 for (int i = 0; i<monstresEnnemis.size(); i++){
@@ -101,34 +102,38 @@ public class Partie {
                 System.out.println("Capacitée utilisée");
             }
 
-        }else {
-            System.out.println("La capacitée du champion est inutilisable pendant ce tour !");
-        }
+            }else{
+                System.out.println("La capacitée du champion est inutilisable pendant ce tour !");
+            }
 
-        int cdRestantCapacite = champion.getCooldownCapa();
-        if (cdRestantCapacite !=0){
-            champion.setCooldownCapa(cdRestantCapacite-1);
-        }
+            int cdRestantCapacite = champion.getCooldownCapa();
+            if (cdRestantCapacite !=0){
+                champion.setCooldownCapa(cdRestantCapacite-1);
+            }
 
 
-        while(true){
-            if (!plateau.getMonstresSurPlateau(joueur).isEmpty()){
-                System.out.println("Voulez vous lancer une attaque avec vos monstres ? (oui/non)");
-                String choixAttaque = scanner.next();
-                if (choixAttaque.equalsIgnoreCase("non")){
+            while(true){
+                if (!plateau.getMonstresSurPlateau(joueur).isEmpty()){
+                    System.out.println("Voulez vous lancer une attaque avec vos monstres ? (oui/non)");
+                    String choixAttaque = scanner.next();
+                    if (choixAttaque.equalsIgnoreCase("non")){
+                        break;
+                    }
+                    if (choixAttaque.equalsIgnoreCase("oui")){
+
+                            plateau.afficherMonstreEnJeu(joueur);
+                            System.out.println("Choisissez l'ID du monstre à faire attaquer ");
+                            int idMonstre = scanner.nextInt();
+                            System.out.println("Monstre choisi" +" ");
+                            break;
+                    
+                }
+                } else {
                     break;
                 }
-                if (choixAttaque.equalsIgnoreCase("oui")){
-                    plateau.afficherMonstreEnJeu(joueur);
-                    System.out.println("Choisissez l'ID du monstre à faire attaquer ");
-                    int idMonstre = scanner.nextInt();
-                    System.out.println("Monstre choisi" +" ");
-                }
-            } else {
-                break;
             }
+            System.out.println("Fin de la phase d'attaque :");
         }
-        System.out.println("Fin de la phase d'attaque :");
     }
 
     private void afficherMain(Joueur joueur) throws InterruptedException {

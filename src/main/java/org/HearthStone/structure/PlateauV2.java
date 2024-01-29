@@ -21,19 +21,21 @@ public class PlateauV2 {
     }
     public List<Monstre> getMonstresEnnemisSurPlateau(Joueur joueur){
         if(joueur.equals(espaceJoueur1.getJoueur())){
+            System.out.println("Joueur 1");
             return espaceJoueur2.getMonstresIG();
         } else if (joueur.equals(espaceJoueur2.getJoueur())) {
             return espaceJoueur1.getMonstresIG();
         }
         return new ArrayList<>();
     }
+
     public void afficherMonstreEnJeu(Joueur joueur) {
-        List<Monstre> monstresIG = getMonstresSurPlateau(joueur);
-        System.out.println("Monstre en jeu : ");
-        for (Monstre monstre : monstresIG) {
-            System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
+            System.out.println("Monstre en jeu : ");
+            for (Monstre monstre : getMonstresSurPlateau(joueur)) {
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
         }
     }
+
     public void invoquerMonstre(Joueur joueur, Monstre monstre){
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
         espaceJoueur.invoquerMonstre(monstre);
