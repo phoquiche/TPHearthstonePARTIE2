@@ -17,6 +17,7 @@ public class Partie {
     private Joueur joueur1;
     private Joueur joueur2;
     private PlateauV2 plateau;
+    private boolean partieTerminee = false;
 
     public Partie(Joueur joueur1, Joueur joueur2){
         this.joueur1 = joueur1;
@@ -26,12 +27,13 @@ public class Partie {
     private Scanner scanner = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Partie.class);
     public void demarrerPartie() throws InterruptedException {
-        while(!partieTerminee()){
+        while(!partieTerminee){
             effectuerTour(joueur1);
-            if(!partieTerminee()){
+            if(!partieTerminee){
                 effectuerTour(joueur2);
             }
         }
+        System.out.println("Partie terminée");
     }
 
     private void effectuerTour(Joueur joueur) throws InterruptedException {
@@ -47,9 +49,7 @@ public class Partie {
         phaseAttaque(joueur);
 
         //fin du tour
-        if (joueur.getChampion().getPv() == 0){
 
-        }
     }
 
     private void phaseInvocations(Joueur joueur) throws InterruptedException {
@@ -106,14 +106,14 @@ public class Partie {
                     System.out.println("Capacitée utilisée");
 
                 } else {
-                    List<Monstre> monstresEnnemis = plateau.getMonstresSurPlateau(joueur);
+                    List<Monstre> monstresAllies = plateau.getMonstresSurPlateau(joueur);
                     System.out.println("Monstres alliés disponible : ");
-                    for (int i = 0; i<monstresEnnemis.size(); i++){
-                        System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
+                    for (int i = 0; i<monstresAllies.size(); i++){
+                        System.out.println((i+1)+". ID :"+monstresAllies.get(i).getId()+" Nom :"+monstresAllies.get(i).getNom());
                     }
                     System.out.println("Choisissez l'ID du monstre à cibler ");
                     int idMonstre = scanner.nextInt();
-                    Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
+                    Monstre monstrecible = trouverMonstreParID(monstresAllies, idMonstre);
                     if(monstrecible != null){
                         champion.utiliserCapaciteSpeciale(monstrecible);
                         logger.info("Capacité effectuée par "+joueur.getNom());
@@ -155,6 +155,15 @@ public class Partie {
             }
         }
         System.out.println("Fin de la phase d'attaque :");
+
+        if (joueur1.getChampion().getPv() == 0){
+            System.out.println("Victoire de " + joueur2.getNom());
+            partieTerminee = true;
+        }
+        if (joueur2.getChampion().getPv() == 0){
+            System.out.println("Victoire de " + joueur1.getNom());
+            partieTerminee = true;
+        }
     }
 
     private void afficherMain(Joueur joueur) throws InterruptedException {
@@ -181,8 +190,5 @@ public class Partie {
             }
         }
         return null;
-    }
-    private boolean partieTerminee(){
-        return false;
     }
 }
