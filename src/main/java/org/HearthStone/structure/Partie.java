@@ -3,10 +3,14 @@ package org.HearthStone.structure;
 import org.HearthStone.HearthStone;
 import org.HearthStone.personnages.Champion;
 import org.HearthStone.personnages.Monstre;
+import org.HearthStone.personnages.capacites.AttaqueCible;
+import org.HearthStone.personnages.capacites.CapaciteSpeciale;
+import org.HearthStone.personnages.capacites.Guerison;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Partie {
@@ -82,21 +86,43 @@ public class Partie {
 
             if(choixCapacite.equalsIgnoreCase("oui")) {
 
-                List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
-                System.out.println("Monstres ennemies disponible : ");
-                for (int i = 0; i<monstresEnnemis.size(); i++){
-                    System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
-                }
-                System.out.println("Choisissez l'ID du monstre à cibler ");
-                int idMonstre = scanner.nextInt();
-                Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
-                if(monstrecible != null){
-                    champion.utiliserCapaciteSpeciale(monstrecible);
-                    logger.info("Capacité effectuée par "+joueur.getNom());
-                    if (monstrecible.getPv() == 0){
-                        plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                if (Objects.equals(joueur.getChampion().getCapaciteSpeciale(), new AttaqueCible())){
+                    List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
+                    System.out.println("Monstres ennemies disponible : ");
+                    for (int i = 0; i<monstresEnnemis.size(); i++){
+                        System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
+                    }
+                    System.out.println("Choisissez l'ID du monstre à cibler ");
+                    int idMonstre = scanner.nextInt();
+                    Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
+                    if(monstrecible != null){
+                        champion.utiliserCapaciteSpeciale(monstrecible);
+                        logger.info("Capacité effectuée par "+joueur.getNom());
+                        if (monstrecible.getPv() == 0){
+                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                        }
+                    }
+
+                    System.out.println("Capacitée utilisée");
+
+                } else {
+                    List<Monstre> monstresEnnemis = plateau.getMonstresSurPlateau(joueur);
+                    System.out.println("Monstres alliés disponible : ");
+                    for (int i = 0; i<monstresEnnemis.size(); i++){
+                        System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
+                    }
+                    System.out.println("Choisissez l'ID du monstre à cibler ");
+                    int idMonstre = scanner.nextInt();
+                    Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
+                    if(monstrecible != null){
+                        champion.utiliserCapaciteSpeciale(monstrecible);
+                        logger.info("Capacité effectuée par "+joueur.getNom());
+                        if (monstrecible.getPv() == 0){
+                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                        }
                     }
                 }
+
 
                 System.out.println("Capacitée utilisée");
             }
