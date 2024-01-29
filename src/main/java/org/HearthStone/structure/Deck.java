@@ -21,7 +21,7 @@ public class Deck {
         for (int i = 0; i<10; i++){
             Carte carte = new Carte("Test"+(i+1), genererClasseAleatoire());
             cartes.add(carte);
-            Thread.sleep(50);
+            Thread.sleep(0);//50
         }
     }
 

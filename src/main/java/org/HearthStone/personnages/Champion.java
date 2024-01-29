@@ -2,7 +2,7 @@ package org.HearthStone.personnages;
 
 import org.HearthStone.personnages.capacites.CapaciteSpeciale;
 
-public class Champion {
+public class Champion implements Vie{
     private static int compteurChampionID = 1;
     private int id;
     private String nom;
@@ -43,10 +43,19 @@ public class Champion {
         return pv;
     }
 
+    @Override
     public void subirDegats(int degats) {
         pv -= degats;
         if(pv <= 0){
             pv = 0;
+        }
+    }
+
+    @Override
+    public void soignerPv(int pvGagne) {
+        pv += pvGagne;
+        if(pv > ReferentielStats.PV_CHAMPION){
+            pv = ReferentielStats.PV_CHAMPION;
         }
     }
 

@@ -24,7 +24,7 @@ public class Joueur {
     private void piocherMainInitiale() throws InterruptedException {
         for (int i = 0; i<5; i++){
             piocherCarte();
-            Thread.sleep(100);
+            Thread.sleep(0);//100
         }
     }
     public void piocherCarte(){

@@ -20,4 +20,11 @@ public class Eclaireur extends Monstre {
         return FA_MIN_ECLAIREUR + random.nextInt(FA_MAX_ECLAIREUR - FA_MIN_ECLAIREUR + 1);
     }
 
+    @Override
+    public void soignerPv(int pvGagne) {
+        setPv(getPv() + pvGagne);
+        if(getPv() > PV_MAX_ECLAIREUR){
+            setPv(PV_MAX_ECLAIREUR);
+        }
+    }
 }

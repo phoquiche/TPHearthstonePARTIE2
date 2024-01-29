@@ -12,13 +12,14 @@ import java.util.Scanner;
 public class Partie {
     private Joueur joueur1;
     private Joueur joueur2;
-    private PlateauV2 plateau;
+    public PlateauV2 plateau;
 
     public Partie(Joueur joueur1, Joueur joueur2){
         this.joueur1 = joueur1;
         this.joueur2 = joueur2;
         this.plateau = new PlateauV2(new EspaceJoueur(joueur1), new EspaceJoueur(joueur2));
     }
+
     private Scanner scanner = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Partie.class);
     public void demarrerPartie() throws InterruptedException {
@@ -32,10 +33,10 @@ public class Partie {
 
     private void effectuerTour(Joueur joueur) throws InterruptedException {
         System.out.println("Tour de "+joueur.getNom());
-        Thread.sleep(250);
+        Thread.sleep(0);//250
         //phase de pioche
         joueur.piocherCarte();
-        Thread.sleep(1000);
+        Thread.sleep(0);//1000
         //phase d'invocations
         phaseInvocations(joueur);
         System.out.println("Fin de la phase d'invocation");
@@ -79,30 +80,28 @@ public class Partie {
 
 
             if(choixCapacite.equalsIgnoreCase("oui")) {
-                if ( plateau.getMonstresEnnemisSurPlateau(joueur).isEmpty()) {
+                if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
                     System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
-                }
-                else {
-                List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
-                System.out.println("Monstres ennemies disponible : ");
-                for (int i = 0; i<monstresEnnemis.size(); i++){
-                    System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
-                }
-                System.out.println("Choisissez l'ID du monstre à cibler ");
-                int idMonstre = scanner.nextInt();
-                Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
-                if(monstrecible != null){
-                    champion.utiliserCapaciteSpeciale(monstrecible);
-                    logger.info("Capacité effectuée par "+joueur.getNom());
-                    if (monstrecible.getPv() == 0){
-                        plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                } else {
+                    List<Monstre> monstresEnnemis = plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur));
+                    System.out.println("Monstres ennemies disponible : ");
+                    for (int i = 0; i<monstresEnnemis.size(); i++){
+                        System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
+                    }
+                    System.out.println("Choisissez l'ID du monstre à cibler ");
+                    int idMonstre = scanner.nextInt();
+                    Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
+                    if(monstrecible != null){
+                        champion.utiliserCapaciteSpeciale(monstrecible);
+                        logger.info("Capacité effectuée par "+joueur.getNom());
+                        if (monstrecible.getPv() == 0){
+                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                        }
                     }
                 }
-
                 System.out.println("Capacitée utilisée");
             }
-
-            }else{
+        }else{
                 System.out.println("La capacitée du champion est inutilisable pendant ce tour !");
             }
 
@@ -119,28 +118,50 @@ public class Partie {
                     if (choixAttaque.equalsIgnoreCase("non")){
                         break;
                     }
-                    if (choixAttaque.equalsIgnoreCase("oui")){
-
-                            plateau.afficherMonstreEnJeu(joueur);
-                            System.out.println("Choisissez l'ID du monstre à faire attaquer ");
-                            int idMonstre = scanner.nextInt();
-                            System.out.println("Monstre choisi" +" ");
+                    if (choixAttaque.equalsIgnoreCase("oui")) {
+                        System.out.println("Monstre disponible sur votre plateau : ");
+                        plateau.afficherMonstreEnJeu(joueur);
+                        System.out.println("Choisissez l'ID du monstre à faire attaquer ");
+                        int idMonstre = scanner.nextInt();
+                        System.out.println("Monstre choisi : " + idMonstre);
+                        if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
+                            System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
+                            
                             break;
-                    
-                }
+                        }else {
+                            System.out.println("Monstre ennemi disponible : ");
+                            plateau.afficherMonstreEnJeu(plateau.getJoueurEnnemi(joueur));
+                            int idMonstreEnnemi = scanner.nextInt();
+            
+                            Monstre attaquant = plateau.getMonstreParId(idMonstre);
+                            Monstre ennemi = plateau.getMonstreParId(idMonstreEnnemi);
+            
+                            // Vérifiez si les deux monstres sont valides
+                            if (attaquant != null && ennemi != null) {
+                                // Attaque du monstre ennemi
+                                ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
+                                // Affiche les points de vie du monstre ennemi après l'attaque
+                                if (ennemi.getPv() > 0) 
+                                    System.out.println("Points de vie du monstre ennemi : " + ennemi.getPv());
+                                
+                                break;
+                            } 
+                        }
+                    }
                 } else {
                     break;
                 }
             }
-            System.out.println("Fin de la phase d'attaque :");
+            System.out.println("Fin de la phase d'attaque  ");
         }
-    }
+    
+    
 
-    private void afficherMain(Joueur joueur) throws InterruptedException {
+    public static void afficherMain(Joueur joueur) throws InterruptedException {
         System.out.println("Main de "+joueur.getNom()+": ");
         for (Carte carte : joueur.getMain()){
             System.out.println("Nom : " + carte.getNom() + " Classe : " + carte.getClasse());
-            Thread.sleep(250);
+            Thread.sleep(0);//250
         }
     }
 

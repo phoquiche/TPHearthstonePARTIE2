@@ -26,5 +26,7 @@ public class EspaceJoueur {
 
     public void retirerMonstre(Monstre monstre) {
         monstresIG.remove(monstre);
+        System.out.println("Il reste "+monstresIG.size()+" monstres adverse en jeu");
     }
+
 }
