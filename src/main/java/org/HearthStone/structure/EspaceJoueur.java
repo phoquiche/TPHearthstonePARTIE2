@@ -24,6 +24,12 @@ public class EspaceJoueur {
         return joueur;
     }
 
+    public void resetAllSorts() {
+        for (Monstre monstre : monstresIG) {
+            monstre.resetSort();
+        }
+    }
+
     public void retirerMonstre(Monstre monstre) {
         monstresIG.remove(monstre);
         System.out.println("Il reste "+monstresIG.size()+" monstres adverse en jeu");

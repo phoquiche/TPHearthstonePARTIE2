@@ -70,6 +70,33 @@ public class PlateauV2 {
         }
     }
 
+
+    public void resetAllSorts(Joueur joueur) {
+        for (Monstre monstre : getMonstresSurPlateau(joueur)) {
+            monstre.resetSort();
+        } 
+    }
+
+
+    public List<Integer>getMonstreEnJeuAvecSort(Joueur joueur) {
+        List<Integer> listId = new ArrayList<>();
+        for (Monstre monstre : getMonstresSurPlateau(joueur)) {
+            if (monstre.sortDisponible()) 
+                listId.add(monstre.getId());
+        }
+        return listId;
+    }
+
+    public void afficherMonstreEnJeuAvecSort(Joueur joueur) {
+        for (Monstre monstre : getMonstresSurPlateau(joueur)) {
+            if (monstre.sortDisponible()) {
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
+            } else {
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative() + " (Sort déjà utilisé)");
+            }
+        }
+    }
+
     public void invoquerMonstre(Joueur joueur, Monstre monstre){
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
         espaceJoueur.invoquerMonstre(monstre);
