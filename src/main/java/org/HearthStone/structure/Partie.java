@@ -47,6 +47,7 @@ public class Partie {
         //phase d'invocations
         phaseInvocations(joueur);
         System.out.println("Fin de la phase d'invocation");
+        logger.info("Fin de la phase d'invocation");
         //phase d'attaque
         phaseAttaque(joueur);
 
@@ -140,6 +141,7 @@ public class Partie {
               
         } else {
                 System.out.println("La capacitée du champion est inutilisable pendant ce tour !");
+                logger.info("Capacité inutilisable ce tour.");
             }
 
             int cdRestantCapacite = champion.getCooldownCapa();
@@ -151,6 +153,7 @@ public class Partie {
             while(true){
                 if (!plateau.getMonstresSurPlateau(joueur).isEmpty()){
                     System.out.println("Voulez vous utiliser la compétence d'un de vos monstres ? (oui/non)");
+                    logger.info("Le joueur décide d'arreter son attaque.");
                     String choixAttaque = scanner.next();
                     if (choixAttaque.equalsIgnoreCase("non")){
                         break;
@@ -179,6 +182,7 @@ public class Partie {
                             } else {
                                 if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
                                     System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
+                                    logger.info("Degats infligés au champion : " + plateau.getMonstreParId(idMonstre).getForceAdaptative());
                                     joueur.getEnnemie(plateau).getChampion().subirDegats(plateau.getMonstreParId(idMonstre).getForceAdaptative());
                                     plateau.getMonstreParId(idMonstre).sortUtilise();
                                     break;
@@ -196,8 +200,10 @@ public class Partie {
                                         ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
                                         plateau.getMonstreParId(idMonstre).sortUtilise();
                                         // Affiche les points de vie du monstre ennemi après l'attaque
-                                        if (ennemi.getPv() > 0) 
+                                        if (ennemi.getPv() > 0) {
                                             System.out.println("Points de vie du monstre ennemi : " + ennemi.getPv());
+                                            logger.info("Le monstre adverse a subit des dégats mais n'en est pas mort");
+                                        }
                                         else logger.info("Le monstre " + ennemi.getNom() + " est mort suite à l'attaque de " + attaquant.getNom()); 
                                     }
                                 }
@@ -210,6 +216,7 @@ public class Partie {
                 }
             }
             System.out.println("Fin de la phase d'attaque  ");
+            logger.info("Fin de la phase d'attaque");
         }
 
 
@@ -244,12 +251,14 @@ public class Partie {
         // Vérifie si les points de vie du champion de joueur1 sont épuisés
         if (joueur1.getChampion().getPv() <= 0) {
             System.out.println("La partie est terminée. Le joueur " + joueur2.getNom() + " a gagné!");
+            logger.info("La partie est terminée. Le joueur " + joueur2.getNom() + " a gagné!");
             return true;
         }
     
         // Vérifie si les points de vie du champion de joueur2 sont épuisés
         if (joueur2.getChampion().getPv() <= 0) {
             System.out.println("La partie est terminée. Le joueur " + joueur1.getNom() + " a gagné!");
+            logger.info("La partie est terminée. Le joueur " + joueur1.getNom() + " a gagné!");
             return true;
         }
     

@@ -1,6 +1,8 @@
 package org.HearthStone.personnages;
 
 import org.HearthStone.structure.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class Monstre extends Carte implements Vie{
     private int pv;
@@ -9,6 +11,7 @@ public abstract class Monstre extends Carte implements Vie{
 
     private boolean sort = true;
 
+    private static final Logger logger = LogManager.getLogger(Partie.class);
 
     public Monstre(int id, String nom, int pv, int forceAdaptative){
         super(nom, ClasseMonstre.Eclaireur);
@@ -54,6 +57,7 @@ public abstract class Monstre extends Carte implements Vie{
         pv -= pvPerdu;
         if(pv <= 0){
             System.out.println("Le monstre " + getNom() + " est mort");
+            logger.info("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
             plateau.detruireMonstre(this, joueur);
         }
         else System.out.println("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
@@ -64,5 +68,6 @@ public abstract class Monstre extends Carte implements Vie{
 
     public void regenererHp(int soin) {
         pv += soin;
+        logger.info("Le monstre " + getNom() + " a été soigné de " + soin + ". PV actuels : " + pv);
     }
 }
