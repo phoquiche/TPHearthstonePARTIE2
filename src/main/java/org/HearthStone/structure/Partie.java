@@ -57,6 +57,7 @@ public class Partie {
 
     private void phaseInvocations(Joueur joueur) throws InterruptedException {
         System.out.println("Début de la phase d'invocation pour "+joueur.getNom());
+        plateau.resetAllSorts(joueur);
 
         while(true){
             afficherMain(joueur);
@@ -151,43 +152,67 @@ public class Partie {
 
             while(true){
                 if (!plateau.getMonstresSurPlateau(joueur).isEmpty()){
-                    System.out.println("Voulez vous lancer une attaque avec vos monstres ? (oui/non)");
+                    System.out.println("Voulez vous utiliser la compétence d'un de vos monstres ? (oui/non)");
+                    logger.info("Le joueur décide d'arreter son attaque.");
                     String choixAttaque = scanner.next();
                     if (choixAttaque.equalsIgnoreCase("non")){
                         logger.info("Le joueur décide d'arreter son attaque.");
                         break;
                     }
                     if (choixAttaque.equalsIgnoreCase("oui")) {
-                        System.out.println("Monstre disponible sur votre plateau : ");
-                        plateau.afficherMonstreEnJeu(joueur);
-                        System.out.println("Choisissez l'ID du monstre à faire attaquer ");
-                        int idMonstre = scanner.nextInt();
-                        System.out.println("Monstre choisi : " + idMonstre);
-                        if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
-                            System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
-                            joueur.getEnnemie(plateau).getChampion().subirDegats(plateau.getMonstreParId(idMonstre).getForceAdaptative());
-                            logger.info("Degats infligés au champion : " + plateau.getMonstreParId(idMonstre).getForceAdaptative());
-                            break;
-                        }else {
-                            System.out.println("Monstre ennemi disponible : ");
-                            plateau.afficherMonstreEnJeu(plateau.getJoueurEnnemi(joueur));
-                            int idMonstreEnnemi = scanner.nextInt();
-            
-                            Monstre attaquant = plateau.getMonstreParId(idMonstre);
-                            Monstre ennemi = plateau.getMonstreParId(idMonstreEnnemi);
-            
-                            // Vérifiez si les deux monstres sont valides
-                            if (attaquant != null && ennemi != null) {
-                                // Attaque du monstre ennemi
-                                ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
-                                // Affiche les points de vie du monstre ennemi après l'attaque
-                                if (ennemi.getPv() > 0) {
-                                    System.out.println("Points de vie du monstre ennemi : " + ennemi.getPv());
-                                    logger.info("Le monstre adverse a subit des dégats mais n'en est pas mort");
+
+                        while (plateau.getMonstreEnJeuAvecSort(joueur).size()>0){
+                            System.out.println("Monstre disponible sur votre plateau : ");
+                            plateau.afficherMonstreEnJeuAvecSort(joueur);
+                            System.out.println("Choisissez l'ID du monstre à faire attaquer ");
+                            int idMonstre;
+                            //vérifie que l'entrée est un entier pour pas faire planter le programme
+                            if (scanner.hasNextInt()) {
+                                idMonstre = scanner.nextInt();
+                            } else {
+                                System.out.println("Veuillez entrer un ID de monstre valide (entier).");
+                                scanner.next();
+                                continue; // Retourner au début de la boucle pour redemander une entrée.
+                            }
+                            System.out.println("Monstre choisi : " + idMonstre);
+
+                            // Vérifiez si le monstre est bien présent sur le jeu et si son sort est disponible
+                            if (plateau.getMonstreParId(idMonstre)== null) {
+                                System.out.println("Merci de choisir un monstre valide");
+                            } else if (plateau.getMonstreParId(idMonstre).sortDisponible() == false) {
+                                System.out.println("Ce monstre a déjà utilisé son sort");
+                            } else {
+                                if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
+                                    System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
+                                    logger.info("Degats infligés au champion : " + plateau.getMonstreParId(idMonstre).getForceAdaptative());
+                                    joueur.getEnnemie(plateau).getChampion().subirDegats(plateau.getMonstreParId(idMonstre).getForceAdaptative());
+                                    plateau.getMonstreParId(idMonstre).sortUtilise();
+                                    break;
+                                }else {
+                                    System.out.println("Monstre ennemi disponible : ");
+                                    plateau.afficherMonstreEnJeu(plateau.getJoueurEnnemi(joueur));
+                                    int idMonstreEnnemi = scanner.nextInt();
+                    
+                                    Monstre attaquant = plateau.getMonstreParId(idMonstre);
+                                    Monstre ennemi = plateau.getMonstreParId(idMonstreEnnemi);
+                    
+                                    // Vérifiez si les deux monstres sont valides
+                                    if (attaquant != null && ennemi != null) {
+                                        // Attaque du monstre ennemi
+                                        ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
+                                        plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        // Affiche les points de vie du monstre ennemi après l'attaque
+                                        if (ennemi.getPv() > 0) {
+                                            System.out.println("Points de vie du monstre ennemi : " + ennemi.getPv());
+                                            logger.info("Le monstre adverse a subit des dégats mais n'en est pas mort");
+                                        }
+                                        else logger.info("Le monstre " + ennemi.getNom() + " est mort suite à l'attaque de " + attaquant.getNom()); 
+                                    }
                                 }
-                                break;
-                            } 
+                            }
+
                         }
+                        break;
                     }
                 } else {
                     break;

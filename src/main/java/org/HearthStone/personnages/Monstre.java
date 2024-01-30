@@ -9,6 +9,9 @@ public abstract class Monstre extends Carte implements Vie{
 
     private int forceAdaptative;
 
+    private boolean sort = true;
+
+    private static final Logger logger = LogManager.getLogger(Partie.class);
 
     public Monstre(int id, String nom, int pv, int forceAdaptative){
         super(nom, ClasseMonstre.Eclaireur);
@@ -29,9 +32,24 @@ public abstract class Monstre extends Carte implements Vie{
     public void setPv(int pv) {
         this.pv = pv;
     }
+    
     public void setForceAdaptative(int forceAdaptative) {
         this.forceAdaptative = forceAdaptative;
     }
+
+    public boolean sortDisponible() {
+        return sort;
+    }
+
+    public void sortUtilise() {
+        sort = false;
+    }
+
+    public void resetSort() {
+        sort = true;
+    }
+
+
 
 
 
@@ -40,10 +58,13 @@ public abstract class Monstre extends Carte implements Vie{
         pv -= pvPerdu;
         System.out.println("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
         logger.info("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
+
         if(pv <= 0){
             System.out.println("Le monstre " + getNom() + " est mort");
+            logger.info("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
             plateau.detruireMonstre(this, joueur);
         }
+        else System.out.println("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
     }
 
     @Override

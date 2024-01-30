@@ -35,7 +35,6 @@ public class Joueur {
         }
     }
 
-
     public void invoquerCarte(Carte carte, PlateauV2 plateau){
         if (main.contains(carte)){
             Monstre monstre = carte.convertirEnMonstre();
