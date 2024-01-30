@@ -21,13 +21,43 @@ class HearthStoneTest {
     Joueur joueur1 = new Joueur("joueur1", champion1, creerDeck());
     Joueur joueur2 = new Joueur("joueur2", champion2, creerDeck());
     PlateauV2 plateauV2 = new PlateauV2(new EspaceJoueur(joueur1), new EspaceJoueur(joueur2));
+    Partie partie = new Partie(joueur1,joueur2);
 
 
     HearthStoneTest() throws InterruptedException {
     }
     @Test
+    public void testAttaqueMonstre() {
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+
+        Monstre eclaireur1 = carte.convertirEnMonstre();
+        Monstre eclaireur2 = carte.convertirEnMonstre();
+
+        eclaireur1.setForceAdaptative(1);
+        int pointDeVie2 = eclaireur2.getPv();
+
+        eclaireur2.subirDegats(eclaireur1.getForceAdaptative(), plateauV2, joueur2);
+        assertEquals(pointDeVie2 - 1, eclaireur2.getPv());
+    }
+
+    @Test
+    public void testGuerisonMonstre() {
+        Carte carte1 = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+        Carte carte2 = new Carte("healer", ClasseMonstre.Healeur);
+
+        Monstre eclaireur = carte1.convertirEnMonstre();
+        Monstre healer = carte2.convertirEnMonstre();
+
+        healer.setForceAdaptative(1);
+        int pointDeVie = eclaireur.getPv();
+
+        eclaireur.regenererHp(healer.getForceAdaptative());
+        assertEquals(pointDeVie + 1, eclaireur.getPv());
+    }
+
+    @Test
     public void testMortMonstre() {
-        Carte carte = new Carte("eclaireur2", ClasseMonstre.Eclaireur);
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
 
         Monstre eclaireur1 = carte.convertirEnMonstre();
         Monstre eclaireur2 = carte.convertirEnMonstre();
@@ -37,6 +67,34 @@ class HearthStoneTest {
         eclaireur2.subirDegats(eclaireur1.getForceAdaptative(), plateauV2, joueur2);
         assertEquals(0, eclaireur2.getPv());
     }
+
+
+    @Test
+    public void degatChampion() {
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+
+        Monstre eclaireur = carte.convertirEnMonstre();
+        eclaireur.setForceAdaptative(1);
+
+        joueur2.getChampion().subirDegats(eclaireur.getForceAdaptative());
+
+        assertEquals(199, joueur2.getChampion().getPv());
+    }
+
+    @Test
+    public void partieTermine() {
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+
+        Monstre eclaireur1 = carte.convertirEnMonstre();
+        eclaireur1.setForceAdaptative(200);
+
+        joueur2.getChampion().subirDegats(eclaireur1.getForceAdaptative());
+
+        assertTrue(partie.partieTerminee());
+    }
+
+
+
 
     private static Deck creerDeck() throws InterruptedException {
         Deck deck = new Deck();
