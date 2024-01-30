@@ -20,6 +20,7 @@ public abstract class Monstre extends Carte implements Vie{
     
     }
 
+    private static final Logger logger = LogManager.getLogger(Partie.class);
     public int getPv() {
         return pv;
     }
@@ -55,6 +56,9 @@ public abstract class Monstre extends Carte implements Vie{
     @Override
     public void subirDegats(int pvPerdu, PlateauV2 plateau, Joueur joueur) {
         pv -= pvPerdu;
+        System.out.println("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
+        logger.info("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
+
         if(pv <= 0){
             System.out.println("Le monstre " + getNom() + " est mort");
             logger.info("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);

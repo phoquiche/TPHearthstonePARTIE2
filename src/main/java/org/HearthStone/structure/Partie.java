@@ -156,9 +156,11 @@ public class Partie {
                     logger.info("Le joueur décide d'arreter son attaque.");
                     String choixAttaque = scanner.next();
                     if (choixAttaque.equalsIgnoreCase("non")){
+                        logger.info("Le joueur décide d'arreter son attaque.");
                         break;
                     }
                     if (choixAttaque.equalsIgnoreCase("oui")) {
+
                         while (plateau.getMonstreEnJeuAvecSort(joueur).size()>0){
                             System.out.println("Monstre disponible sur votre plateau : ");
                             plateau.afficherMonstreEnJeuAvecSort(joueur);
@@ -208,6 +210,7 @@ public class Partie {
                                     }
                                 }
                             }
+
                         }
                         break;
                     }
