@@ -24,14 +24,17 @@ public class PlateauV2 {
 
 
 
-    public Monstre getMonstreParId(int id){
+    public Monstre getMonstreParId(int id) {
         //Concaténation des dex esoaces joueurs pour avoir tous les monstres présent sur le plateau
         List<Monstre> monstres = getMonstresSurPlateau(espaceJoueur1.getJoueur());
         monstres.addAll(getMonstresSurPlateau(espaceJoueur2.getJoueur()));
-        for (Monstre monstre : monstres){
-            if (monstre.getId() == id){
+        for (Monstre monstre : monstres) {
+            if (monstre.getId() == id) {
                 return monstre;
             }
+        }
+        return null;
+    }
 
     public List<Monstre> getMonstresEnemieListSurPlateau(Joueur joueur) {
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;

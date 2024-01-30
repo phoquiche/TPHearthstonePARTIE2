@@ -29,9 +29,9 @@ public class Partie {
     private Scanner scanner = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Partie.class);
     public void demarrerPartie() throws InterruptedException {
-        while(!partieTerminee){
+        while(!partieTerminee()){
             effectuerTour(joueur1);
-            if(!partieTerminee){
+            if(!partieTerminee()){
                 effectuerTour(joueur2);
             }
         }
@@ -98,20 +98,21 @@ public class Partie {
                     } else {
                         List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
 
-                    System.out.println("Monstres ennemies disponible : ");
-                    for (int i = 0; i<monstresEnnemis.size(); i++){
-                        System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
-                    }
-                    System.out.println("Choisissez l'ID du monstre à cibler ");
-                    int idMonstre = scanner.nextInt();
-                    Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
-                    if(monstrecible != null){
-                        champion.utiliserCapaciteSpeciale(monstrecible);
-                        logger.info("Capacité effectuée par "+joueur.getNom());
-                        if (monstrecible.getPv() == 0){
-                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                        System.out.println("Monstres ennemies disponible : ");
+                        for (int i = 0; i < monstresEnnemis.size(); i++) {
+                            System.out.println((i + 1) + ". ID :" + monstresEnnemis.get(i).getId() + " Nom :" + monstresEnnemis.get(i).getNom());
                         }
+                        System.out.println("Choisissez l'ID du monstre à cibler ");
+                        int idMonstre = scanner.nextInt();
+                        Monstre monstrecible = trouverMonstreParID(monstresEnnemis, idMonstre);
+                        if (monstrecible != null) {
+                            champion.utiliserCapaciteSpeciale(monstrecible);
+                            logger.info("Capacité effectuée par " + joueur.getNom());
+                            if (monstrecible.getPv() == 0) {
+                                plateau.detruireMonstre(monstrecible, plateau.getJoueurEnnemi(joueur));
+                            }
 
+                        }
                     }
 
                     System.out.println("Capacitée utilisée");
@@ -128,9 +129,6 @@ public class Partie {
                     if(monstrecible != null){
                         champion.utiliserCapaciteSpeciale(monstrecible);
                         logger.info("Capacité effectuée par "+joueur.getNom());
-                        if (monstrecible.getPv() == 0){
-                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
-                        }
                     }
                 }
 
