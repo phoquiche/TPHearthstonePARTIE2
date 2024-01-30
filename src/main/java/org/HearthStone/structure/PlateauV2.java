@@ -18,8 +18,20 @@ public class PlateauV2 {
 
     public List<Monstre> getMonstresSurPlateau(Joueur joueur) {
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
-        return espaceJoueur.getMonstresIG();
+        return new ArrayList<>(espaceJoueur.getMonstresIG());
     }
+
+
+
+
+    public Monstre getMonstreParId(int id){
+        //Concaténation des dex esoaces joueurs pour avoir tous les monstres présent sur le plateau
+        List<Monstre> monstres = getMonstresSurPlateau(espaceJoueur1.getJoueur());
+        monstres.addAll(getMonstresSurPlateau(espaceJoueur2.getJoueur()));
+        for (Monstre monstre : monstres){
+            if (monstre.getId() == id){
+                return monstre;
+            }
 
     public List<Monstre> getMonstresEnemieListSurPlateau(Joueur joueur) {
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
@@ -44,26 +56,27 @@ public class PlateauV2 {
             return getMonstresEnemieListSurPlateau(espaceJoueur2.getJoueur());
         } else if (joueur.equals(espaceJoueur2.getJoueur())) {
             return getMonstresEnemieListSurPlateau(espaceJoueur1.getJoueur());
+
         }
-        return new ArrayList<>();
+        return null;
     }
+
     public void afficherMonstreEnJeu(Joueur joueur) {
-        List<Monstre> monstresIG = getMonstresSurPlateau(joueur);
-        System.out.println("Monstre en jeu : ");
-        for (Monstre monstre : monstresIG) {
-            System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
+            for (Monstre monstre : getMonstresSurPlateau(joueur)) {
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
         }
     }
+
     public void invoquerMonstre(Joueur joueur, Monstre monstre){
         EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
         espaceJoueur.invoquerMonstre(monstre);
     }
+
     public void detruireMonstre(Monstre monstre, Joueur joueur){
-        if (monstre.getPv() == 0) {
+        if (monstre.getPv() <= 0) {
             joueur.getCimetiere().ajouterMonsterDetruit(monstre);
             EspaceJoueur espaceJoueur = (joueur == espaceJoueur1.getJoueur()) ? espaceJoueur1 : espaceJoueur2;
-            espaceJoueur.retirerMonstre(monstre);
-
+            espaceJoueur.retirerMonstre(monstre);;
         }
     }
     public EspaceJoueur getEspaceJoueur1(){

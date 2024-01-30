@@ -1,8 +1,10 @@
 package org.HearthStone.personnages;
 
 import org.HearthStone.personnages.capacites.CapaciteSpeciale;
+import org.HearthStone.structure.Joueur;
+import org.HearthStone.structure.PlateauV2;
 
-public class Champion {
+public class Champion implements Vie{
     private static int compteurChampionID = 1;
     private int id;
     private String nom;
@@ -11,6 +13,7 @@ public class Champion {
 
     private int cooldownCapa;
 
+    
 
     public Champion(String nom, CapaciteSpeciale capaciteSpeciale){
         this.id = compteurChampionID++;
@@ -43,10 +46,23 @@ public class Champion {
         return pv;
     }
 
+    @Override
     public void subirDegats(int degats) {
         pv -= degats;
         if(pv <= 0){
             pv = 0;
+            System.out.println("Le champion "+nom+" est mort");
+        }
+    }
+
+    @Override
+    public void subirDegats(int pvPerdu, PlateauV2 plateau, Joueur joueur) {    }
+
+    @Override
+    public void soignerPv(int pvGagne) {
+        pv += pvGagne;
+        if(pv > ReferentielStats.PV_CHAMPION){
+            pv = ReferentielStats.PV_CHAMPION;
         }
     }
 
@@ -62,4 +78,6 @@ public class Champion {
     public void setCooldownCapa(int cooldownCapa) {
         this.cooldownCapa = cooldownCapa;
     }
+
+
 }

@@ -17,6 +17,8 @@ public class HearthStone {
 
     public static void main(String[] args) throws InterruptedException {
 
+        System.out.println("Bienvenue dans la version d'HearthStone de Arnaud et Auguste !");
+
         System.out.println("Création du deck aléatoire du Joueur 1");
         Deck deckJoueur1 = creerDeck();
 

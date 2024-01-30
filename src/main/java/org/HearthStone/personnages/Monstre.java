@@ -1,8 +1,8 @@
 package org.HearthStone.personnages;
 
-import org.HearthStone.structure.Carte;
+import org.HearthStone.structure.*;
 
-public abstract class Monstre  extends Carte {
+public abstract class Monstre extends Carte implements Vie{
     private int pv;
 
     private int forceAdaptative;
@@ -12,6 +12,7 @@ public abstract class Monstre  extends Carte {
         super(nom, ClasseMonstre.Eclaireur);
         this.pv = pv;
         this.forceAdaptative = forceAdaptative;
+    
     }
 
     public int getPv() {
@@ -21,17 +22,25 @@ public abstract class Monstre  extends Carte {
     public int getForceAdaptative() {
         return forceAdaptative;
     }
+
     public void setPv(int pv) {
         this.pv = pv;
     }
 
 
-    public void subirDegats(int degats) {
-        pv -= degats;
+
+    @Override
+    public void subirDegats(int pvPerdu, PlateauV2 plateau, Joueur joueur) {
+        pv -= pvPerdu;
+        System.out.println("Le monstre " + getNom() + " a subi " + pvPerdu + " dégâts. PV restants : " + pv);
         if(pv <= 0){
-            pv = 0;
+            System.out.println("Le monstre " + getNom() + " est mort");
+            plateau.detruireMonstre(this, joueur);
         }
     }
+
+    @Override
+    public void subirDegats(int pvPerdu) {}
 
     public void regenererHp(int soin) {
         pv += soin;

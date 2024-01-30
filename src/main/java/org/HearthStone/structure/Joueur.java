@@ -24,7 +24,7 @@ public class Joueur {
     private void piocherMainInitiale() throws InterruptedException {
         for (int i = 0; i<5; i++){
             piocherCarte();
-            Thread.sleep(100);
+            Thread.sleep(0);//100
         }
     }
     public void piocherCarte(){
@@ -63,4 +63,13 @@ public class Joueur {
     public Cimetiere getCimetiere(){
         return cimetiere;
     }
+    
+    public Joueur getEnnemie(PlateauV2 plateau){
+        if (plateau.getJoueur1() == this){
+            return plateau.getJoueur2();
+        }else {
+            return plateau.getJoueur1();
+        }
+    }
+
 }

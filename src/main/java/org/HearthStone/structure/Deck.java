@@ -23,7 +23,7 @@ public class Deck {
         for (int i = 0; i<10; i++){
             Carte carte = new Carte(noms[random.nextInt(noms.length)].toString(), genererClasseAleatoire());
             cartes.add(carte);
-            Thread.sleep(50);
+            Thread.sleep(0);//50
         }
     }
 
