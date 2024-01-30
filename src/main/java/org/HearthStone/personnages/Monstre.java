@@ -20,7 +20,6 @@ public abstract class Monstre extends Carte implements Vie{
     
     }
 
-    private static final Logger logger = LogManager.getLogger(Partie.class);
     public int getPv() {
         return pv;
     }
