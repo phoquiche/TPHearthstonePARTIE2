@@ -219,7 +219,7 @@ public class Partie {
     }
 
 
-    private boolean partieTerminee() {
+    public boolean partieTerminee() {
         // Vérifie si les points de vie du champion de joueur1 sont épuisés
         if (joueur1.getChampion().getPv() <= 0) {
             System.out.println("La partie est terminée. Le joueur " + joueur2.getNom() + " a gagné!");
