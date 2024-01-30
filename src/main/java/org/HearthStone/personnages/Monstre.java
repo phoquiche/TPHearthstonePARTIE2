@@ -26,6 +26,9 @@ public abstract class Monstre extends Carte implements Vie{
     public void setPv(int pv) {
         this.pv = pv;
     }
+    public void setForceAdaptative(int forceAdaptative) {
+        this.forceAdaptative = forceAdaptative;
+    }
 
 
 

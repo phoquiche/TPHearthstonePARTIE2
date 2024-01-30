@@ -11,6 +11,9 @@ public class Eclaireur extends Monstre {
     public Eclaireur(int id,String nom) {
         super(id,nom, genererPV(), genererFA());
     }
+    public Eclaireur(int id,String nom, int FA, int PV) {
+        super(id,nom, PV, FA);
+    }
     private static int genererPV() {
         Random random = new Random();
         return PV_MIN_ECLAIREUR + random.nextInt(PV_MAX_ECLAIREUR - PV_MIN_ECLAIREUR + 1);
