@@ -3,16 +3,22 @@ package org.HearthStone.structure;
 import org.HearthStone.HearthStone;
 import org.HearthStone.personnages.Champion;
 import org.HearthStone.personnages.Monstre;
+import org.HearthStone.personnages.capacites.AttaqueCible;
+import org.HearthStone.personnages.capacites.CapaciteSpeciale;
+import org.HearthStone.personnages.capacites.Guerison;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Partie {
     private Joueur joueur1;
     private Joueur joueur2;
+
     public PlateauV2 plateau;
+
 
     public Partie(Joueur joueur1, Joueur joueur2){
         this.joueur1 = joueur1;
@@ -23,12 +29,13 @@ public class Partie {
     private Scanner scanner = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Partie.class);
     public void demarrerPartie() throws InterruptedException {
-        while(!partieTerminee()){
+        while(!partieTerminee){
             effectuerTour(joueur1);
-            if(!partieTerminee()){
+            if(!partieTerminee){
                 effectuerTour(joueur2);
             }
         }
+        System.out.println("Partie terminée");
     }
 
     private void effectuerTour(Joueur joueur) throws InterruptedException {
@@ -44,6 +51,7 @@ public class Partie {
         phaseAttaque(joueur);
 
         //fin du tour
+      
     }
 
     private void phaseInvocations(Joueur joueur) throws InterruptedException {
@@ -80,10 +88,16 @@ public class Partie {
 
 
             if(choixCapacite.equalsIgnoreCase("oui")) {
-                if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
-                    System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
-                } else {
-                    List<Monstre> monstresEnnemis = plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur));
+
+
+                if (Objects.equals(joueur.getChampion().getCapaciteSpeciale(), new AttaqueCible())){
+                    
+                  
+                    if ( plateau.getMonstresSurPlateau(plateau.getJoueurEnnemi(joueur)).isEmpty()) {
+                      System.out.println("Il n'y a pas de monstre ennemi sur le plateau, le joueur adverse est attaque");
+                    } else {
+                        List<Monstre> monstresEnnemis = plateau.getMonstresEnnemisSurPlateau(joueur);
+
                     System.out.println("Monstres ennemies disponible : ");
                     for (int i = 0; i<monstresEnnemis.size(); i++){
                         System.out.println((i+1)+". ID :"+monstresEnnemis.get(i).getId()+" Nom :"+monstresEnnemis.get(i).getNom());
@@ -97,11 +111,35 @@ public class Partie {
                         if (monstrecible.getPv() == 0){
                             plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
                         }
+
+                    }
+
+                    System.out.println("Capacitée utilisée");
+
+                } else {
+                    List<Monstre> monstresAllies = plateau.getMonstresSurPlateau(joueur);
+                    System.out.println("Monstres alliés disponible : ");
+                    for (int i = 0; i<monstresAllies.size(); i++){
+                        System.out.println((i+1)+". ID :"+monstresAllies.get(i).getId()+" Nom :"+monstresAllies.get(i).getNom());
+                    }
+                    System.out.println("Choisissez l'ID du monstre à cibler ");
+                    int idMonstre = scanner.nextInt();
+                    Monstre monstrecible = trouverMonstreParID(monstresAllies, idMonstre);
+                    if(monstrecible != null){
+                        champion.utiliserCapaciteSpeciale(monstrecible);
+                        logger.info("Capacité effectuée par "+joueur.getNom());
+                        if (monstrecible.getPv() == 0){
+                            plateau.detruireMonstre(monstrecible,plateau.getJoueurEnnemi(joueur));
+                        }
                     }
                 }
+
+
+
                 System.out.println("Capacitée utilisée");
             }
-        }else{
+              
+        } else {
                 System.out.println("La capacitée du champion est inutilisable pendant ce tour !");
             }
 
@@ -154,8 +192,7 @@ public class Partie {
             }
             System.out.println("Fin de la phase d'attaque  ");
         }
-    
-    
+
 
     public static void afficherMain(Joueur joueur) throws InterruptedException {
         System.out.println("Main de "+joueur.getNom()+": ");
@@ -200,4 +237,6 @@ public class Partie {
         // Si aucune des conditions ci-dessus n'est remplie, la partie n'est pas terminée
         return false;
     }
-}    
+
+}
+

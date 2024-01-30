@@ -41,4 +41,8 @@ public abstract class Monstre extends Carte implements Vie{
 
     @Override
     public void subirDegats(int pvPerdu) {}
+
+    public void regenererHp(int soin) {
+        pv += soin;
+    }
 }

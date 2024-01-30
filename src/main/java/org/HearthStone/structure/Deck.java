@@ -1,7 +1,7 @@
 package org.HearthStone.structure;
 
 import org.HearthStone.personnages.ClasseMonstre;
-
+import org.HearthStone.personnages.monstres_classes.NomMonstre;
 
 
 import java.util.ArrayList;
@@ -18,8 +18,10 @@ public class Deck {
 
 
     public void initialiserDeck() throws InterruptedException {
+        NomMonstre[] noms = NomMonstre.values();
+        Random random = new Random();
         for (int i = 0; i<10; i++){
-            Carte carte = new Carte("Test"+(i+1), genererClasseAleatoire());
+            Carte carte = new Carte(noms[random.nextInt(noms.length)].toString(), genererClasseAleatoire());
             cartes.add(carte);
             Thread.sleep(0);//50
         }
