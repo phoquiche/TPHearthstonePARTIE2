@@ -28,7 +28,7 @@ class HearthStoneTest {
     }
     @Test
     public void testAttaqueMonstre() {
-        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur,"feu");
 
         Monstre eclaireur1 = carte.convertirEnMonstre();
         Monstre eclaireur2 = carte.convertirEnMonstre();
@@ -42,8 +42,8 @@ class HearthStoneTest {
 
     @Test
     public void testGuerisonMonstre() {
-        Carte carte1 = new Carte("eclaireur", ClasseMonstre.Eclaireur);
-        Carte carte2 = new Carte("healer", ClasseMonstre.Healeur);
+        Carte carte1 = new Carte("eclaireur", ClasseMonstre.Eclaireur,"feu");
+        Carte carte2 = new Carte("healer", ClasseMonstre.Healeur,"eau");
 
         Monstre eclaireur = carte1.convertirEnMonstre();
         Monstre healer = carte2.convertirEnMonstre();
@@ -57,21 +57,25 @@ class HearthStoneTest {
 
     @Test
     public void testMortMonstre() {
-        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur, "feu");
+        Carte carte2 = new Carte("eclaireur1", ClasseMonstre.Eclaireur, "eau");
 
         Monstre eclaireur1 = carte.convertirEnMonstre();
-        Monstre eclaireur2 = carte.convertirEnMonstre();
+        Monstre eclaireur2 = carte2.convertirEnMonstre();
 
-        eclaireur2.setPv(eclaireur1.getForceAdaptative());
+        eclaireur2.setPv(30);
+        eclaireur1.setForceAdaptative(30);
 
-        eclaireur2.subirDegats(eclaireur1.getForceAdaptative(), plateauV2, joueur2);
-        assertEquals(0, eclaireur2.getPv());
+
+
+        eclaireur2.subirDegats(eclaireur1.getForceAdaptative()/2, plateauV2, joueur2);
+        assertEquals(15, eclaireur2.getPv());
     }
 
 
     @Test
     public void degatChampion() {
-        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur,"feu");
 
         Monstre eclaireur = carte.convertirEnMonstre();
         eclaireur.setForceAdaptative(1);
@@ -83,7 +87,7 @@ class HearthStoneTest {
 
     @Test
     public void partieTermine() {
-        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur);
+        Carte carte = new Carte("eclaireur", ClasseMonstre.Eclaireur, "Feu");
 
         Monstre eclaireur1 = carte.convertirEnMonstre();
         eclaireur1.setForceAdaptative(200);
