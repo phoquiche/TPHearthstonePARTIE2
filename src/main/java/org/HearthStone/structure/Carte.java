@@ -12,10 +12,15 @@ public class Carte {
     private String nom;
     private ClasseMonstre classe;
 
-    public Carte(String nom, ClasseMonstre classe){
+    protected String type;
+
+    public Carte(String nom, ClasseMonstre classe, String type){
         this.id = ++compteurIDS;
         this.nom = nom;
         this.classe = classe;
+        this.type = type;
+
+
     }
 
     //getter
@@ -32,10 +37,14 @@ public class Carte {
 
     public Monstre convertirEnMonstre(){
         return switch (classe) {
-            case Eclaireur -> new Eclaireur(id, nom);
-            case Healeur -> new Healeur(id, nom);
-            case Protecteur -> new Protecteur(id, nom);
+            case Eclaireur -> new Eclaireur(id, nom,type);
+            case Healeur -> new Healeur(id, nom, type);
+            case Protecteur -> new Protecteur(id, nom, type);
             default -> throw new IllegalArgumentException("Classe de Monstre non reconnue : " + classe);
         };
+    }
+
+    public String getType() {
+        return type;
     }
 }

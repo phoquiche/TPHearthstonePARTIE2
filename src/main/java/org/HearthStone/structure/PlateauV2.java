@@ -90,9 +90,9 @@ public class PlateauV2 {
     public void afficherMonstreEnJeuAvecSort(Joueur joueur) {
         for (Monstre monstre : getMonstresSurPlateau(joueur)) {
             if (monstre.sortDisponible()) {
-                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative());
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative() + " type : " + monstre.getType()+ " (Sort disponible)");
             } else {
-                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative() + " (Sort déjà utilisé)");
+                System.out.println("ID :" + monstre.getId() + ", Nom : " + monstre.getNom() + ", PV:" + monstre.getPv() + ", Force Adaptative:" + monstre.getForceAdaptative()+" type "+ monstre.getType() + " (Sort déjà utilisé)");
             }
         }
     }

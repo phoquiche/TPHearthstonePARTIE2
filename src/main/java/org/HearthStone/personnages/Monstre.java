@@ -11,10 +11,12 @@ public abstract class Monstre extends Carte implements Vie{
 
     private boolean sort = true;
 
+
+
     private static final Logger logger = LogManager.getLogger(Partie.class);
 
-    public Monstre(int id, String nom, int pv, int forceAdaptative){
-        super(nom, ClasseMonstre.Eclaireur);
+    public Monstre(int id, String nom, int pv, int forceAdaptative, String type){
+        super(nom, ClasseMonstre.Eclaireur, type);
         this.pv = pv;
         this.forceAdaptative = forceAdaptative;
     
@@ -72,5 +74,9 @@ public abstract class Monstre extends Carte implements Vie{
     public void regenererHp(int soin) {
         pv += soin;
         logger.info("Le monstre " + getNom() + " a été soigné de " + soin + ". PV actuels : " + pv);
+    }
+
+    public String getType() {
+        return type;
     }
 }

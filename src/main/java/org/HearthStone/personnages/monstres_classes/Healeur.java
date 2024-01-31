@@ -6,8 +6,8 @@ import java.util.Random;
 import static org.HearthStone.personnages.ReferentielStats.*;
 
 public class Healeur extends Monstre{
-    public Healeur(int id,String nom) {
-        super(id,nom, genererPV(), genererFA());
+    public Healeur(int id,String nom, String type) {
+        super(id,nom, genererPV(), genererFA(), type);
     }
 
     private static int genererPV() {

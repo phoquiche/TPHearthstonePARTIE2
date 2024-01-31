@@ -1,0 +1,15 @@
+15:43:02.641 [main] INFO  org.HearthStone.HearthStone - Le joueur a selectionné comme nom pour son champion :Noa
+15:43:03.802 [main] INFO  org.HearthStone.HearthStone - Le joueur a selectionné comme capacité pour son champion : Attaque sur une cible
+15:43:05.240 [main] INFO  org.HearthStone.HearthStone - Le joueur a selectionné comme nom pour son champion :Antoine
+15:43:05.932 [main] INFO  org.HearthStone.HearthStone - Le joueur a selectionné comme capacité pour son champion : Attaque sur une cible
+15:43:05.944 [main] INFO  org.HearthStone.HearthStone - Partie crée avec succès
+15:43:18.221 [main] ERROR org.HearthStone.structure.Partie - Carte choisie par le joueur Noa est incorrecte
+15:43:23.546 [main] INFO  org.HearthStone.structure.Partie - Monstre invoqué par Noa : Firefang
+15:43:23.546 [main] INFO  org.HearthStone.structure.Partie - Fin de la phase d'invocation
+15:43:28.936 [main] INFO  org.HearthStone.structure.Partie - Le joueur décide d'arreter son attaque.
+15:43:28.937 [main] INFO  org.HearthStone.structure.Partie - Fin de la phase d'attaque
+15:44:07.853 [main] INFO  org.HearthStone.structure.Partie - Monstre invoqué par Antoine : Frostbite
+15:44:07.854 [main] INFO  org.HearthStone.structure.Partie - Fin de la phase d'invocation
+15:44:20.196 [main] INFO  org.HearthStone.structure.Partie - Le monstre Firefang a subi 15 dégâts. PV restants : 18
+15:44:20.197 [main] INFO  org.HearthStone.structure.Partie - Le monstre adverse a subit des dégats mais n'en est pas mort
+15:44:20.197 [main] INFO  org.HearthStone.structure.Partie - Fin de la phase d'attaque

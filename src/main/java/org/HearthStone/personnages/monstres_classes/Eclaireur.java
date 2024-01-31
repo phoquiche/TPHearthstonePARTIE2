@@ -8,11 +8,11 @@ import static org.HearthStone.personnages.ReferentielStats.*;
 
 public class Eclaireur extends Monstre {
 
-    public Eclaireur(int id,String nom) {
-        super(id,nom, genererPV(), genererFA());
+    public Eclaireur(int id,String nom, String type) {
+        super(id,nom, genererPV(), genererFA(), type);
     }
-    public Eclaireur(int id,String nom, int FA, int PV) {
-        super(id,nom, PV, FA);
+    public Eclaireur(int id,String nom, int FA, int PV, String type) {
+        super(id,nom, PV, FA,type);
     }
     private static int genererPV() {
         Random random = new Random();

@@ -21,7 +21,7 @@ public class Deck {
         NomMonstre[] noms = NomMonstre.values();
         Random random = new Random();
         for (int i = 0; i<10; i++){
-            Carte carte = new Carte(noms[random.nextInt(noms.length)].toString(), genererClasseAleatoire());
+            Carte carte = new Carte(noms[random.nextInt(noms.length)].toString(), genererClasseAleatoire(), genererTypeAleatoire());
             cartes.add(carte);
             Thread.sleep(0);//50
         }
@@ -40,5 +40,11 @@ public class Deck {
         ClasseMonstre[] classes = ClasseMonstre.values();
         Random random = new Random();
         return classes[random.nextInt(classes.length)];
+    }
+
+    private static String genererTypeAleatoire() {
+        String[] types = {"feu","eau","plante"};
+        Random random = new Random();
+        return types[random.nextInt(types.length)];
     }
 }

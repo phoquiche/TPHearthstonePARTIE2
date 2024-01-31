@@ -8,8 +8,8 @@ import java.util.Random;
 import static org.HearthStone.personnages.ReferentielStats.*;
 
 public class Protecteur extends Monstre {
-    public Protecteur(int id, String nom) {
-        super(id, nom, genererPV(), 0);
+    public Protecteur(int id, String nom, String type) {
+        super(id, nom, genererPV(), 0, type);
     }
 
     private static int genererPV() {

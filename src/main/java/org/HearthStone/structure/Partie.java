@@ -153,7 +153,6 @@ public class Partie {
             while(true){
                 if (!plateau.getMonstresSurPlateau(joueur).isEmpty()){
                     System.out.println("Voulez vous utiliser la compétence d'un de vos monstres ? (oui/non)");
-                    logger.info("Le joueur décide d'arreter son attaque.");
                     String choixAttaque = scanner.next();
                     if (choixAttaque.equalsIgnoreCase("non")){
                         logger.info("Le joueur décide d'arreter son attaque.");
@@ -199,8 +198,35 @@ public class Partie {
                                     // Vérifiez si les deux monstres sont valides
                                     if (attaquant != null && ennemi != null) {
                                         // Attaque du monstre ennemi
-                                        ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
-                                        plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        if (attaquant.type.equals("feu") && ennemi.type.equals("plante")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()*2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else if (attaquant.type.equals("feu") && ennemi.type.equals("eau")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()/2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else if (attaquant.type.equals("plante") && ennemi.type.equals("eau")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()*2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else if (attaquant.type.equals("plante") && ennemi.type.equals("feu")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()/2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else if (attaquant.type.equals("eau") && ennemi.type.equals("feu")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()*2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else if (attaquant.type.equals("eau") && ennemi.type.equals("plante")){
+                                            ennemi.subirDegats(attaquant.getForceAdaptative()/2, plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
+                                        else {
+                                            ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
+                                            ennemi.subirDegats(attaquant.getForceAdaptative(), plateau, plateau.getJoueurEnnemi(joueur));
+                                            plateau.getMonstreParId(idMonstre).sortUtilise();
+                                        }
                                         // Affiche les points de vie du monstre ennemi après l'attaque
                                         if (ennemi.getPv() > 0) {
                                             System.out.println("Points de vie du monstre ennemi : " + ennemi.getPv());
@@ -226,7 +252,7 @@ public class Partie {
     public static void afficherMain(Joueur joueur) throws InterruptedException {
         System.out.println("Main de "+joueur.getNom()+": ");
         for (Carte carte : joueur.getMain()){
-            System.out.println("Nom : " + carte.getNom() + " Classe : " + carte.getClasse());
+            System.out.println("Nom : " + carte.getNom() + " Classe : " + carte.getClasse()+ " Type : " + carte.getType());
             Thread.sleep(0);//250
         }
     }
